@@ -20,7 +20,7 @@ jobs:
     - name: List the Docker image
       run: docker images
     - name: Login the Docker hub
-      run: docker login --username={{ secrets.DK_USERNAME }} --password={{ secrets.DK_PASSWORD }}
+      run: docker login -u {{ secrets.DK_USERNAME }} -p {{ secrets.DK_PASSWORD }}
     - name: Save the Docker image
       run: docker save zerotier-planet|gzip > zerotier-planet.tar.gz && 7z a -t7z -mx=9 -p${{ secrets.PASSWORD }} zerotier-planet.tar.gz.7z zerotier-planet.tar.gz
     - name: Upload the Docker image
