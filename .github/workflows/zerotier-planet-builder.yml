@@ -14,7 +14,7 @@ jobs:
           branch=${GITHUB_REF##*/}
           sha=${GITHUB_SHA::8}
           ts=$(date +%s)
-          echo "::set-output name=BUILD_ID::${branch}-${sha}-${ts}"
+          echo ":set-output name=BUILD_ID::${branch}-${sha}-${ts}"
     - uses: actions/checkout@v4
     - name: Edit the planet IP
       run: sed -i "s/1.1.1.1/${{ secrets.IP }}/g" ./patch/patch.json
