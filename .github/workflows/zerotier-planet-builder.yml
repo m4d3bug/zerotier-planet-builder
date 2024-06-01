@@ -8,6 +8,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Generate build ID
+      id: prep
+      run: |
+          branch=${GITHUB_REF##*/}
+          sha=${GITHUB_SHA::8}
+          ts=$(date +%s)
+          echo "::set-output name=BUILD_ID::${branch}-${sha}-${ts}"
     - uses: actions/checkout@v4
     - name: Edit the planet IP
       run: sed -i "s/1.1.1.1/${{ secrets.IP }}/g" ./patch/patch.json
@@ -28,7 +35,9 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DK_USERNAME }}/zerotier-planet:$(date +'%Y-%m-%d_%H-%M')
+        tags: |
+          ${{ secrets.DK_USERNAME }}/zerotier-planet:${{ env.IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
+          ${{ secrets.DK_USERNAME }}/zerotier-planet:latest       
     - name: Save the Docker image
       run: docker save zerotier-planet|gzip > zerotier-planet.tar.gz && 7z a -t7z -mx=9 -p${{ secrets.PASSWORD }} zerotier-planet.tar.gz.7z zerotier-planet.tar.gz
     - name: Upload the Docker image
