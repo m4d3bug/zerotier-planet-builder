@@ -23,11 +23,12 @@ jobs:
           username: ${{ secrets.DK_USERNAME }}
           password: ${{ secrets.DK_PASSWORD }}
     - name: Build and push
+      id: docker_build
       uses: docker/build-push-action@v2
       with:
-          context: .
-          push: true
-          tags: ${{ secrets.DK_USERNAME }}/zerotier-planet:$(date +'%Y-%m-%d_%H-%M') , ${{ secrets.DK_USERNAME }}/zerotier-planet:latest
+        context: .
+        push: true
+        tags: ${{ secrets.DK_USERNAME }}/zerotier-planet:$(date +'%Y-%m-%d_%H-%M') , ${{ secrets.DK_USERNAME }}/zerotier-planet:latest
     - name: Save the Docker image
       run: docker save zerotier-planet|gzip > zerotier-planet.tar.gz && 7z a -t7z -mx=9 -p${{ secrets.PASSWORD }} zerotier-planet.tar.gz.7z zerotier-planet.tar.gz
     - name: Upload the Docker image
