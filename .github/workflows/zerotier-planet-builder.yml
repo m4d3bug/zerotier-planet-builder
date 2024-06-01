@@ -13,8 +13,9 @@ jobs:
       run: |
           branch=${GITHUB_REF##*/}
           sha=${GITHUB_SHA::8}
-          ts=$(date +%s)
-          echo ":set-output name=BUILD_ID::${branch}-${sha}-${ts}"
+          ts=$(date +'%Y-%m-%dT%H-%M-%SZ')
+          RELEASE.2024-05-28T17-19-04Z
+          echo "::set-output name=BUILD_ID::RELEASE.${ts}"
     - uses: actions/checkout@v4
     - name: Edit the planet IP
       run: sed -i "s/1.1.1.1/${{ secrets.IP }}/g" ./patch/patch.json
