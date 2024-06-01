@@ -36,7 +36,7 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DK_USERNAME }}/zerotier-planet:${{ env.IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
+          ${{ secrets.DK_USERNAME }}/zerotier-planet:${{ steps.prep.outputs.BUILD_ID }}
           ${{ secrets.DK_USERNAME }}/zerotier-planet:latest       
     - name: Save the Docker image
       run: docker save zerotier-planet|gzip > zerotier-planet.tar.gz && 7z a -t7z -mx=9 -p${{ secrets.PASSWORD }} zerotier-planet.tar.gz.7z zerotier-planet.tar.gz
