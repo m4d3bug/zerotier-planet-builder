@@ -27,7 +27,11 @@ jobs:
       with:
           context: .
           push: true
-          tags: ${{ secrets.DK_USERNAME }}/zerotier-planet:latest
+          tags: |
+            ${{ secrets.DK_USERNAME }}/zerotier-planet:RELEASE.$(date +'%Y-%m-%dT%H-%M-%SZ')
+            ${{ secrets.DK_USERNAME }}/zerotier-planet:latest
+${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ steps.vars.outputs.tag }} , ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+
     - name: Save the Docker image
       run: docker save zerotier-planet|gzip > zerotier-planet.tar.gz && 7z a -t7z -mx=9 -p${{ secrets.PASSWORD }} zerotier-planet.tar.gz.7z zerotier-planet.tar.gz
     - name: Upload the Docker image
